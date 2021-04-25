@@ -12,19 +12,22 @@ const ShadowDOM = () => {
 
         // Create a shadow DOM
         const outerShadowRoot = container.current!.attachShadow({ mode: 'open' })
-        const host = document.createElement('div')
-        outerShadowRoot.appendChild(host)
-
-        // Create a nested shadow DOM
-        const innerShadowRoot = host.attachShadow({ mode: 'open' })
+        const style = document.createElement('style')
+        style.textContent = `
+        .editor-root {
+            background-color: red;
+        }
+        `;
+        outerShadowRoot.appendChild(style)
         const reactRoot = document.createElement('div')
-        innerShadowRoot.appendChild(reactRoot)
+        reactRoot.className = "editor-root"
+        outerShadowRoot.appendChild(reactRoot)
 
         // Render the editor within the nested shadow DOM
         ReactDOM.render(<ShadowEditor />, reactRoot)
     })
 
-    return <div ref={container} />
+    return <div className="editor-root" ref={container} />
 }
 
 const ShadowEditor = () => {
